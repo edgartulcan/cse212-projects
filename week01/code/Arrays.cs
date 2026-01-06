@@ -9,11 +9,28 @@ public static class Arrays
     public static double[] MultiplesOf(double number, int length)
     {
         // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
 
-        return []; // replace this return statement with your own
+        // PLAN for MultiplesOf(number, length)
+        // 1) Create a new array of doubles with exactly 'length' elements.
+        // 2) For i from 0 up to length - 1:
+        //    - The i-th element should be the (i + 1)-th multiple of 'number'.
+        //    - That is: result[i] = number * (i + 1).
+        // 3) After the loop, return the filled array.
+        //
+        // Notes / Edge cases:
+        // - If number == 0, every element will be 0 (correct).
+        // - If number is negative, multiples remain negative in the same pattern.
+        // - We assume 'length' > 0 
+
+
+        double[] result = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -26,8 +43,21 @@ public static class Arrays
     public static void RotateListRight(List<int> data, int amount)
     {
         // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // PLAN for RotateListRight(data, amount)
+        // 1) Determine how many elements will move from the end of the list to the front.
+        //    - This is equal to 'amount'.
+        // 2) Get the last 'amount' elements from the list using GetRange.
+        // 3) Get the remaining elements from the beginning of the list.
+        // 4) Clear the original list.
+        // 5) Add the last elements first, then add the remaining elements.
+
+        int count = data.Count;
+
+        List<int> endPart = data.GetRange(count - amount, amount);
+        List<int> startPart = data.GetRange(0, count - amount);
+
+        data.Clear();
+        data.AddRange(endPart);
+        data.AddRange(startPart);
     }
 }
