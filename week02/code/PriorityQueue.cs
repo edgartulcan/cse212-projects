@@ -1,6 +1,9 @@
-﻿public class PriorityQueue
+﻿using System;
+using System.Collections.Generic;
+
+public class PriorityQueue
 {
-    private List<PriorityItem> _queue = new();
+    private readonly List<PriorityItem> _queue = new();
 
     /// <summary>
     /// Add a new value to the queue with an associated priority.  The
