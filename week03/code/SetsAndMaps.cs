@@ -19,11 +19,32 @@ public static class SetsAndMaps
     /// that there were no duplicates) and therefore should not be returned.
     /// </summary>
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
+
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        var set = new HashSet<string>(words);
+        var results = new List<string>();
+
+        foreach (var word in words)
+        {
+            // skip same-letter words like "aa"
+            if (word[0] == word[1])
+                continue;
+
+            string rev = new string(new char[] { word[1], word[0] });
+
+            // if reversed exists, add pair and remove both so no duplicates
+            if (set.Contains(rev))
+            {
+                results.Add($"{word} & {rev}");
+                set.Remove(word);
+                set.Remove(rev);
+            }
+        }
+
+        return results.ToArray();
     }
+
 
     /// <summary>
     /// Read a census file and summarize the degrees (education)
@@ -36,17 +57,26 @@ public static class SetsAndMaps
     /// </summary>
     /// <param name="filename">The name of the file to read</param>
     /// <returns>fixed array of divisors</returns>
+
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
         var degrees = new Dictionary<string, int>();
+
         foreach (var line in File.ReadLines(filename))
         {
-            var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            var fields = line.Split(',');
+
+            string degree = fields[3].Trim();
+
+            if (!degrees.ContainsKey(degree))
+                degrees[degree] = 0;
+
+            degrees[degree]++;
         }
 
         return degrees;
     }
+
 
     /// <summary>
     /// Determine if 'word1' and 'word2' are anagrams.  An anagram
@@ -64,11 +94,41 @@ public static class SetsAndMaps
     /// Reminder: You can access a letter by index in a string by 
     /// using the [] notation.
     /// </summary>
+
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // Remove spaces and lowercase
+        string a = new string(word1.Where(c => c != ' ').ToArray()).ToLower();
+        string b = new string(word2.Where(c => c != ' ').ToArray()).ToLower();
+
+        if (a.Length != b.Length)
+            return false;
+
+        var counts = new Dictionary<char, int>();
+
+        // count letters from first word
+        foreach (char c in a)
+        {
+            if (!counts.ContainsKey(c))
+                counts[c] = 0;
+            counts[c]++;
+        }
+
+        // subtract using second word
+        foreach (char c in b)
+        {
+            if (!counts.ContainsKey(c))
+                return false;
+
+            counts[c]--;
+
+            if (counts[c] < 0)
+                return false;
+        }
+
+        return true;
     }
+
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
